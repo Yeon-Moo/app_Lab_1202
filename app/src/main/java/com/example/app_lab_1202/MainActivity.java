@@ -6,11 +6,19 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 public class MainActivity extends AppCompatActivity implements
         OnMapReadyCallback {
@@ -48,6 +56,29 @@ public class MainActivity extends AppCompatActivity implements
                 ActivityCompat.checkSelfPermission(MainActivity.this,
                         Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED)
             return;
+
+        googleMap.setMyLocationEnabled(true);
+        MarkerOptions markerOptions=new MarkerOptions();
+        markerOptions.position(new LatLng(25.033611,121.565000));
+        markerOptions.title("台北101");
+        markerOptions.draggable(true);
+        googleMap.addMarker(markerOptions);
+        markerOptions.position(new LatLng(25.047924,121.517081));
+        markerOptions.title("台北車站");
+        markerOptions.draggable(true);
+        googleMap.addMarker(markerOptions);
+
+        PolylineOptions polylineOptions=new PolylineOptions();
+        polylineOptions.add(new LatLng(25.033611,121.565000));
+        polylineOptions.add(new LatLng(25.032728,121.564137));
+        polylineOptions.add(new LatLng(25.047924,121.517081));
+        polylineOptions.color(Color.BLUE);
+        Polyline polyline=googleMap.addPolyline(polylineOptions);
+        polyline.setWidth(10);
+        googleMap.moveCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                        new LatLng(25.034,121.545),13)
+        );
     }
 
     private void initMap(){
